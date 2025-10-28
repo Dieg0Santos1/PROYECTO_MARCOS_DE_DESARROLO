@@ -6,7 +6,6 @@
 
 ### 1. Diseño Visual Mejorado
 - Interfaz moderna con gradientes y diseño responsivo
-- Sin emojis en las vistas
 - Bootstrap 5.3.3 para estilos consistentes
 - Cards con sombras y bordes redondeados
 - Navegacion consistente en todas las paginas
