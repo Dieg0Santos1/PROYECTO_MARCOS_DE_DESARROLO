@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estudiantes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .btn-action {
+            min-width: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/dashboard">Panel de Control</a>
+        <span class="navbar-text text-white fw-bold">Gestión de Estudiantes</span>
+        <a href="/logout" class="btn btn-outline-light btn-sm">Cerrar Sesion</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <h3 class="text-primary mb-3" th:text="${estudiante != null and estudiante.id != null} ? 'Editar Estudiante' : 'Registrar Estudiante'">Registrar Estudiante</h3>
+            <form th:action="${estudiante != null and estudiante.id != null} ? @{/estudiantes/actualizar} : @{/estudiantes/guardar}" 
+                  method="post" class="row g-3">
+                <input type="hidden" th:if="${estudiante != null}" th:field="${estudiante.id}" name="id">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="nombre" 
+                           th:value="${estudiante != null} ? ${estudiante.nombre} : ''"
+                           placeholder="Nombre" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="apellido" 
+                           th:value="${estudiante != null} ? ${estudiante.apellido} : ''"
+                           placeholder="Apellido" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="email" class="form-control" name="correo" 
+                           th:value="${estudiante != null} ? ${estudiante.correo} : ''"
+                           placeholder="Correo" required>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" name="edad" 
+                           th:value="${estudiante != null} ? ${estudiante.edad} : ''"
+                           placeholder="Edad" required>
+                </div>
+                <div class="col-md-1 d-grid">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-4 shadow">
+        <div class="card-body">
+            <h4 class="text-secondary mb-3">Lista de Estudiantes</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Edad</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e : ${estudiantes}">
+                            <td th:text="${e.id}"></td>
+                            <td th:text="${e.nombre}"></td>
+                            <td th:text="${e.apellido}"></td>
+                            <td th:text="${e.correo}"></td>
+                            <td th:text="${e.edad}"></td>
+                            <td>
+                                <a th:href="@{'/estudiantes/editar/' + ${e.id}}" class="btn btn-sm btn-warning btn-action me-1">Editar</a>
+                                <a th:href="@{'/estudiantes/eliminar/' + ${e.id}}" 
+                                   class="btn btn-sm btn-danger btn-action"
+                                   onclick="return confirm('¿Esta seguro de eliminar este estudiante?')">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
